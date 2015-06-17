@@ -22,3 +22,4 @@
 void	test_class(int results[2]);
 void	test_parent(int results[2]);
 void	test_polymorphism(int results[2]);
+void	test_exception(int results[2]);

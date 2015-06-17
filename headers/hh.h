@@ -6,3 +6,4 @@
 #include <hh/visibility.h>
 #include <hh/class.h>
 #include <hh/polymorphism.h>
+#include <hh/exceptions.h>
