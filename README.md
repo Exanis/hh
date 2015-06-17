@@ -335,3 +335,36 @@ int	main()
 }
 ```
 
+## Polymorphism
+Another great feature of an object-oriented language is called "polymorphism". It's the ability for a function to react in different ways, depending on the parameters given to it. HH provide a partial implementation of this feature using the keyword *when*. Let's do a little pro and cons on this one. With HH's *when* keyword, you:
+- *can* define a part (or the totality) of a function to act in a different way, depending on the parameters
+- *can* define common parts of a function (IE: parts that will happen no matter the arguments)
+- *can* use as many nested when as you want
+- *can* specialize a non-class member
+- *can* specialize to a parent type, even if the variable is actually a child type
+- *cannot* change the number of parameters of a function
+- *cannot* specialize a function on non-class types
+
+To be able to use the when keyword, you first need to define your polymorphics variable as *var* type. Be warned that when you do so, you will *not* be able to use your variable outside of a when block. Then, you can use the when(variable_name, type) keyword to identify a block that need a given type. And finally, you must close your block using end_when. Here come an exemple:
+
+```c
+#include <stdio.h>
+#include "hh/noclass.h"
+#include "class1.h"
+#include "class2.h"
+#include "hh.h"
+
+int	applyMethod(var methodHolder, int value)
+{
+  printf("Going to apply a method on %d\n", value); // This will happen no matter what
+  when(methodHolder, class1)
+    {
+      value = methodHolder->myClass1Method(value); // This will happen only if methodHolder is a class1 object or a class1 child
+    } end_when;
+  when(methodHolder, class2)
+    {
+      value = methodHolder->myClass2Method(value); // This will happen only if methodHolder is a class2 object or a class2 child
+    } end_when;
+  return (value); // This will also happen no matter what
+}
+```
