@@ -5,14 +5,14 @@
     {							\
       results[1]++;					\
       printf("[%d/%d][\033[32mPASS\033[0m][%s] %s\n",	\
-	     results[0],				\
 	     results[1],				\
+	     results[0],				\
 	     #name,					\
 	     description);				\
     } else {						\
     printf("[%d/%d][\033[31mFAIL\033[0m][%s] %s\n",	\
-	   results[0],					\
 	   results[1],					\
+	   results[0],					\
 	   #name,					\
 	   description);				\
   }
@@ -21,3 +21,4 @@
 
 void	test_class(int results[2]);
 void	test_parent(int results[2]);
+void	test_polymorphism(int results[2]);

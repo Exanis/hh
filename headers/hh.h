@@ -5,3 +5,4 @@
 #include <hh/defines.h>
 #include <hh/visibility.h>
 #include <hh/class.h>
+#include <hh/polymorphism.h>

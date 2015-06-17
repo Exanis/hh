@@ -13,8 +13,6 @@ typedef struct
   size_t size;
 }	hh_object_struct;
 
-typedef void	*var;
-
 void	hh_new(hh_object_struct *);
 void	hh_construct_object(hh_object_struct *);
 void	*hh_init_memory();
