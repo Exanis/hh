@@ -9,6 +9,7 @@ void	hh_new(hh_object_struct *object_identifier)
 
   if (!object)
     return ; /* TODO: Implement throw and throw here. */
+  memset(object, 0, object_identifier->size);
   memcpy(object, object_identifier, sizeof(*object_identifier));
   hh_tmp_this_reference = object;
 }

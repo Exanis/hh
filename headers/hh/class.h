@@ -6,23 +6,24 @@
 
 #define	method(name)	*__hh_type_check_ ##name;			\
   auto typeof(*__hh_type_check_ ##name)	__hh_hidden_func_ ##name ();	\
-  									\
+									\
   typeof(*__hh_type_check_ ##name)	name()				\
   {									\
     void	*old_this = this;					\
     void	*args = __builtin_apply_args();				\
     void	*result;						\
     									\
-    this = hh_find_parent_of_type(hh_current_object_struct_definition,	\
-				  hh_tmp_this_reference);		\
+    this = hh_find_of_type(hh_current_object_struct_definition,		\
+			   hh_tmp_this_reference);			\
     result = __builtin_apply(						\
 			     (void (*)()) &__hh_hidden_func_ ##name,	\
 			     args, HH_COPY_STACK_SIZE);			\
     this = old_this;							\
     __builtin_return(result);						\
   };									\
-  									\
-  this->name = &name;							\
+									\
+  if (this->name == NULL)						\
+    this->name = &name;							\
 									\
   typeof(*__hh_type_check_ ##name)	__hh_hidden_func_ ##name
 

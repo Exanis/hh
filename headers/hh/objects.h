@@ -22,5 +22,7 @@ void	delete(void *);
 void	hh_cleanup_local(void *);
 
 void	*hh_find_parent_of_type(hh_object_struct *, hh_object_struct *);
+void	*hh_find_child_of_type(hh_object_struct *, hh_object_struct *);
+void	*hh_find_of_type(hh_object_struct *, hh_object_struct *);
 
 extern void	*hh_tmp_this_reference;
