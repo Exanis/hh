@@ -203,7 +203,7 @@ class (myclass)
   {
     local helloclass hello = new(helloclass, "Hi");
 
-    hello->say();
+    $(hello)->say();
     return 42;
   }
 
@@ -211,7 +211,7 @@ class (myclass)
   {
     helloclass hello = new(helloclass, "Hello");
 
-    hello->say();
+    $(hello)->say();
     delete(hello);
     return 21;
   }
