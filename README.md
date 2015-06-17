@@ -238,7 +238,7 @@ To be able to use inheritancy, there is a few things that you must do:
 - Create a constructor for your child class, even if neither your parent nor your child class need it.
 - Call parent(parentclass) in your child class.
 
-Here come a little exemple, featuring overload, abstract methods, and all this stuff :
+Here come a little exemple, featuring overload, abstract methods, and all this stuff. Please note how the extends() keyword is used in class2.h and how the parent() keyword is used in class2's constructor :
 
 *class1.h*
 ```c
