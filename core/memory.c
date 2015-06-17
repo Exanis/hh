@@ -13,18 +13,52 @@ void	hh_new(hh_object_struct *object_identifier)
   hh_tmp_this_reference = object;
 }
 
+void	hh_construct_object(hh_object_struct *type)
+{
+  hh_object_struct	*child = hh_tmp_this_reference;
+  hh_object_struct	*parent = (hh_object_struct *) (((char *) child) + child->next_parent);
+
+  memcpy(parent, type, sizeof(*type));
+  child->next_parent += parent->size;
+  hh_tmp_this_reference = parent;
+}
+
 void	*hh_init_memory()
 {
   void	*args = __builtin_apply_args();
   hh_object_struct	*object = hh_tmp_this_reference;
   
+  object->__construct();
   __builtin_apply(object->__init, args, HH_COPY_STACK_SIZE);
   return (object);
 }
 
+static void	run_delete(void *object)
+{
+  hh_object_struct *obj = object;
+  char	*struct_ptr = object;
+  char	*max_position;
+  
+  max_position = struct_ptr + obj->size;
+  obj->__delete(object);
+  struct_ptr = struct_ptr + sizeof(hh_object_struct);
+  while (struct_ptr < max_position)
+    {
+      hh_object_struct *obj_struct = (hh_object_struct *) struct_ptr;
+
+      if (obj_struct->magic_number != HH_MAGIC_NUMBER)
+	return ;
+
+      char	*next_struct_ptr = struct_ptr + obj_struct->size;
+      
+      run_delete((void *) obj_struct);
+      struct_ptr = next_struct_ptr;
+    }
+}
+
 void	delete(void *object)
 {
-  ((hh_object_struct *) object)->__delete(object);
+  run_delete(object);
   free(object);
 }
 

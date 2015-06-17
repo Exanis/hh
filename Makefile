@@ -59,7 +59,7 @@ tests:
 	@env CFLAGS=-ggdb $(MAKE) shared
 	@$(MAKE) $(TEST_NAME_SHARED)
 	@echo "[[===== STATIC TEST =====]]"
-	@./$(TEST_NAME_STATIC)
+	@valgrind ./$(TEST_NAME_STATIC)
 	@echo "[[===== SHARED TEST =====]]"
 	@env LD_LIBRARY_PATH=$(BUILD_DIR_SHARED) ./$(TEST_NAME_SHARED)
 

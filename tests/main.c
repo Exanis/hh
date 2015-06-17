@@ -18,6 +18,7 @@ int	main()
   int	results[2] = {0, 0};
 
   main_test(test_class);
+  main_test(test_parent);
   printf("[===== TOTAL RESULT : %d / %d sections OK =====]\n", results[1], results[0]);
   return !(results[0] == results[1]);
 }

@@ -20,3 +20,4 @@
 #define main_test(name)	results[0]++; results[1] += launch_test(&name, #name)
 
 void	test_class(int results[2]);
+void	test_parent(int results[2]);

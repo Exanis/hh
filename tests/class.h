@@ -6,5 +6,5 @@ class(testingClass)
 {
   int	public(method getValue)();
   void	public(method setValue)(int);
-  int	private(value);
+  int	protected(value);
 } end;
