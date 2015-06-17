@@ -217,3 +217,121 @@ class (myclass)
   }
 };
 ```
+
+## Object inheritancy
+
+One of the best parts of any object-oriented language is the ability to extend the possibilities of an object in another. This is named inheritance and, yes, it's possible in C using HH !
+
+There have been many ways to use inheritance in different languages, so here goes the caracteristics of HH's one :
+- You can extends multiple class in a unique one (IE, A can be a child of both B and C)
+- You can of course extends a class already extended (IE, A can be a child of B and C, and C can be a child of D)
+- You can use any method of a parent class in a child class (IE, if A is a child of B, A can use B's method - public and protected ones only, of course)
+- You _cannot_ use any method of a child class in a parent class (IE, if A is a child of B, B cannot use A's method)
+- You can overload any function of a parent class in a child class by simply redefining it (but you cannot change it's function signature).
+- You _may_ create abstract class and/or interfaces by not defining their method in your .c file. However, this is not encouraged because if you use your abstract class and/or not define your method, it will lead to a segmentation fault.
+- You can pass a child class as a parent class to any function or method.
+- You _cannot_ create any kind of diamond inheritancy or anything that may lead to two distinct member of the same class having the same name (this will not compile. Of course, this include extending two time the same class, but what could lead you to this idea anyway ?)
+
+To be able to use inheritancy, there is a few things that you must do:
+- First, respect #include order in your .h. As specified before, you must first include hh.h, then any class' .h that you want to extends
+- Add your extensions **at the beginning** of your class. Anywhere else will fail and/or lead to a segfault / infinite loop (or kill kittens)
+- Create a constructor for your child class, even if neither your parent nor your child class need it.
+- Call parent(parentclass) in your child class.
+
+Here come a little exemple, featuring overload, abstract methods, and all this stuff :
+
+*class1.h*
+```c
+#pragma once
+
+#include "hh.h"
+
+class(class1)
+{
+  int	protected(value);
+  int	public(method getValue)();
+} end;
+```
+
+*class1.c*
+```c
+#include <stdio.h>
+#include "class1.h"
+#include "hh.h"
+
+class(class1)
+{
+  construct()
+    {
+      $(this)->value = 3;
+    }
+  
+  int	method(getValue)()
+  {
+    printf("In class 1\n");
+    return ($(this)->value);
+  }
+};
+```
+
+*class2.h*
+```c
+#pragma once
+
+#include "hh.h"
+#include "class1.h"
+
+class(class2)
+{
+  extends(class1);
+  void	public(method setValue)();
+} end;
+```
+
+*class2.c*
+```c
+#include <stdio.h>
+#include "class2.h"
+#include "hh.h"
+
+class(class2)
+{
+  construct()
+    {
+      parent(class1);
+    }
+  
+  int	method(getValue)()
+  {
+    printf("In class 2\n");
+    return ($(this)->value);
+  }
+
+  void	method(setValue)(int value)
+  {
+    $(this)->value = value;
+  }
+};
+```
+
+*main.c*
+```c
+#include <stdio.h>
+#include "hh/noclass.h"
+#include "class2.h"
+#include "hh.h"
+
+void	test(class1 clazz)
+{
+  printf("Value is %d\n", $(clazz)->getValue());
+}
+
+int	main()
+{
+  local class2 clazz = new(class2);
+
+  $(clazz)->setValue(2);
+  test(clazz);
+}
+```
+
