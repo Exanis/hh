@@ -31,5 +31,5 @@ void	hh_remove_try_context(__attribute__((unused)) void *_)
 
 jmp_buf	*hh_get_last_try_context()
 {
-  return (buffers->buffer);
+  return (&(buffers->buffer));
 }

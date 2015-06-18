@@ -5,9 +5,12 @@
 extern void	*hh_exception_result_ptr;
 extern void	*hh_good_exception_caught;
 
+#define	hh_name_format(what)		hh_tmp_jmp_var_ ## what
+#define hh_name_indirection(what)	hh_name_format(what)
+
 #define	try	hh_exception_result_ptr = NULL;				\
   hh_good_exception_caught = NULL;					\
-  __attribute__((unused, cleanup(hh_remove_try_context))) hh_exception_marker_ ##__LINE__; \
+  __attribute__((unused, cleanup(hh_remove_try_context))) hh_name_indirection(__LINE__); \
   if (setjmp(*hh_add_try_context()) == 0)
 
 #define catch(what)	else if ((hh_good_exception_caught = hh_find_parent_of_type(__hh_definition_ ##what, hh_exception_result_ptr)) != NULL)

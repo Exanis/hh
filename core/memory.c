@@ -1,14 +1,21 @@
 #include <string.h>
-#include "hh.h"
+#include <hh/stdException.h>
+#include <hh.h>
 
 void	*hh_tmp_this_reference = NULL;
+static __hh_no_ptr_Exception	hh_mem_error_exception;
 
 void	hh_new(hh_object_struct *object_identifier)
 {
   void	*object = malloc(object_identifier->size);
 
   if (!object)
-    return ; /* TODO: Implement throw and throw here. */
+    {
+      memset(&hh_mem_error_exception, 0, __hh_definition_Exception->size);
+      memcpy(&hh_mem_error_exception, __hh_definition_Exception, sizeof(*__hh_definition_Exception));
+      hh_init_memory(__RAISE_FUNC, __FILE__, __LINE__, "Cannot allocate memory");
+      throw(&hh_mem_error_exception);
+    }
   memset(object, 0, object_identifier->size);
   memcpy(object, object_identifier, sizeof(*object_identifier));
   hh_tmp_this_reference = object;

@@ -35,9 +35,7 @@ class(Exception)
 
   char	*method(toString)()
   {
-    int	size = 20 + strlen($(this)->file) + strlen($(this)->function) + strlen($(this)->message);
-    char	buffer[size];
-
-    snprintf(buffer, size, "[%s:%d][%s] %s", $(this)->file, $(this)->line, $(this)->function, $(this)->message);
+    snprintf($(this)->buffer, HH_EXCEPTION_BUFFER_SIZE, "[%s:%d][%s] %s", $(this)->file, $(this)->line, $(this)->function, $(this)->message);
+    return ($(this)->buffer);
   }
 }
