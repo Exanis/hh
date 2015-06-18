@@ -368,3 +368,83 @@ int	applyMethod(var methodHolder, int value)
   return (value); // This will also happen no matter what
 }
 ```
+
+## Exception handling
+
+A common way to handle errors in most object-oriented languages is to use exceptions. HH provide a partial way to handle those, including a quite complete try/catch mecanism.
+
+The exception handler in HH define the following keywords :
+- *try* start an exception block
+- *catch* catch a specialized exception (IE, a specific class or any class derived from it)
+- *finally* catch any kind of exception
+- *exception* retrieve the exception content
+- *throw* throw a new exception
+- *new_exception* is a syntaxic sugar to help you throw HH's stdException
+
+Note that in order to use new_exception (and the Exception class that come with it) you must include the header's class: *hh/stdException.h*
+
+Here is a basic example of how to use exceptions:
+```c
+#include <stdio.h>
+#include "hh/noclass.h"
+#include "hh/stdException.h"
+#include "hh.h"
+
+void	my_function()
+{
+  try
+    {
+      throw(new_exception("My error message"));
+      printf("Hello\n"); // This will never be printed
+    }
+  catch(Exception)
+    {
+      Exception e = exception; // This allow you to retrieve the object that was actually thrown
+      
+      fprintf(stderr, "%s\n", $(e)->toString());
+      delete(e); // Note that you still need to manage yourself the life cycle of this variable
+    }
+  finally
+    {
+      printf("Something did happen, but I don't know what...\n"); // This will never be printed either
+    }
+}
+```
+
+You can thrown basically whatever you want through exception. The only real limit is that you can only use specialized catch (IE, not finally) with classes.
+
+There is another important limitation: you must avoid throwing an exception outside of a try/catch block but in the same scope of a previous try catch. If you have to, you probably want to embrace your try/catch block with brackets rather that doing that. Here come an example :
+
+```c
+#include "hh/noclass.h"
+#include "hh/stdException.h"
+#include "hh.h"
+
+void	segfault_function()
+{
+  try
+    {
+      // Do something
+    }
+  finally
+    {
+      // Do something else
+    }
+  throw(new_exception("I will cause an infinite recursive loop")); // This will segfault
+}
+
+void	ok_function()
+{
+  { // Opening a new block only for this try / catch
+    try
+      {
+        // Do something
+      }
+    finally
+      {
+	// Do something else
+      }
+    } // Leaving our try/catch block ; now we are free to throw whatever we want
+  throw(new_exception("This is ok")); // We're not in the same scope of the previous try, we can throw
+}
+```
