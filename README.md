@@ -1,4 +1,4 @@
-hh
+HH
 ==
 
 HH is a toolkit adding object paradigm to the C language. Using a huge set of define and pre-processor, it give a whole set of encapsulation and new keywords, without ressorting to anything else that pure gcc extensions.
